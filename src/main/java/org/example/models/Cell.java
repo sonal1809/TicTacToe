@@ -6,6 +6,12 @@ public class Cell {
     private CellState cellState;
     private Player player;
 
+    public Cell(int row, int col) {
+        this.row = row;
+        this.col = col;
+        this.cellState = CellState.EMPTY;
+    }
+
     public int getRow() {
         return row;
     }
@@ -36,5 +42,14 @@ public class Cell {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void display(){
+        if(player == null){
+            System.out.print("| -- |");
+        }
+        else {
+            System.out.print("| " + player.getSymbol().getaChar());
+        }
     }
 }

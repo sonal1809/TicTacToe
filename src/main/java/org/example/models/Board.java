@@ -1,17 +1,30 @@
 package org.example.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    private int size;
+    private int dimension;
     private List<List<Cell>> board;
 
-    public int getSize() {
-        return size;
+    public Board(int dimension){
+        this.dimension = dimension;
+        board = new ArrayList<>();
+        for(int i=0;i<dimension;i++){
+            board.add(new ArrayList<>());
+
+            for(int j=0;j<dimension;j++){
+                board.get(i).add(new Cell(i,j));
+            }
+        }
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public int getDimension() {
+        return dimension;
+    }
+
+    public void setDimension(int dimension) {
+        this.dimension = dimension;
     }
 
     public List<List<Cell>> getBoard() {
@@ -20,5 +33,14 @@ public class Board {
 
     public void setBoard(List<List<Cell>> board) {
         this.board = board;
+    }
+
+    public void printBoard() {
+        for(List<Cell> row : board){
+            for(Cell cell : row){
+                cell.display();
+            }
+            System.out.println();
+        }
     }
 }
