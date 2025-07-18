@@ -19,11 +19,13 @@ public class RowWinningStrategy implements  WinningStrategy{
             rowMaps.put(row , new HashMap<>());
         }
 
-        if(!rowMaps.get(row).containsKey(aChar)){
-            rowMaps.get(row).put(aChar , 0);
-        }
-        rowMaps.get(row).put(aChar , rowMaps.get(row).get(aChar) + 1);
+        Map<Character , Integer> currRowMap = rowMaps.get(row);
 
-        return false;
+        if(!currRowMap.containsKey(aChar)){
+            currRowMap.put(aChar , 0);
+        }
+        currRowMap.put(aChar , currRowMap.get(aChar) + 1);
+
+        return currRowMap.get(aChar).equals(board.getDimension());
     }
 }
