@@ -11,7 +11,7 @@ public class ColumnWinningStrategy implements WinningStrategy {
     @Override
     public boolean checkWinner(Board board, Move move) {
         int col = move.getCell().getCol();
-        char aChar = move.getPlayer().getSymbol().getaChar();
+        Character aChar = move.getPlayer().getSymbol().getaChar();
 
         if(!colMaps.containsKey(col)){
             colMaps.put(col , new HashMap<>());

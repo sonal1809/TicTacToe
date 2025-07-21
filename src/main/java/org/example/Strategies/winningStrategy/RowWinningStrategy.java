@@ -15,16 +15,16 @@ public class RowWinningStrategy implements  WinningStrategy{
         int row = move.getCell().getRow();
         Character aChar = move.getPlayer().getSymbol().getaChar();
 
-        if(!rowMaps.containsKey(row)){
-            rowMaps.put(row , new HashMap<>());
+        if (!rowMaps.containsKey(row)) {
+            rowMaps.put(row, new HashMap<>());
         }
 
-        Map<Character , Integer> currRowMap = rowMaps.get(row);
+        Map<Character, Integer> currRowMap = rowMaps.get(row);
 
-        if(!currRowMap.containsKey(aChar)){
-            currRowMap.put(aChar , 0);
+        if (!currRowMap.containsKey(aChar)) {
+            currRowMap.put(aChar, 0);
         }
-        currRowMap.put(aChar , currRowMap.get(aChar) + 1);
+        currRowMap.put(aChar, currRowMap.get(aChar) + 1);
 
         return currRowMap.get(aChar).equals(board.getDimension());
     }

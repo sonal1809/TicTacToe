@@ -1,6 +1,7 @@
 package org.example.models;
 
 import org.example.Strategies.winningStrategy.WinningStrategy;
+import org.example.exception.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -89,11 +90,63 @@ public class Game {
         board.printBoard();
     }
 
+    private boolean validateMove(Move move){
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
 
-
-    public Move makeMove(){
-        return null;
+        if(row < 0 || row >= board.getDimension() || col < 0 || col >= board.getDimension()){
+            return false;
+        }
+        // Whether the cell where player is trying to move is empty is not
+        if(!board.getBoard().get(row).get(col).getCellState().equals(CellState.EMPTY)){
+            return false;
+        }
+        return true;
     }
+
+    public void makeMove() throws InvalidMoveException {
+        Player currentPlayer = players.get(nextMovePlayerIndex);
+        System.out.println("This is " + currentPlayer.getName() + " 's move.");
+
+        // Player will choose the move that they want to make
+        Move move = currentPlayer.makeMove(board);
+
+        // Game will validate if the move that the player has chosen is valid or not.
+        if(!validateMove(move)){
+            throw new InvalidMoveException("Invalid move , please retry");
+        }
+
+        // Move is valid so apply this move to the board
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+
+        Cell cell = board.getBoard().get(row).get(col);
+        cell.setCellState(CellState.FILLED);
+        cell.setPlayer(currentPlayer);
+
+        Move finalMove = new Move(currentPlayer , cell);
+        moves.add(finalMove);
+
+        nextMovePlayerIndex  = (nextMovePlayerIndex + 1) % players.size();
+
+        if(checkWinner(finalMove)){
+            winner = currentPlayer;
+            gameState = GameState.ENDED;
+        }
+        else if(moves.size() == board.getDimension() * board.getDimension()){
+            gameState = GameState.DRAW;
+        }
+    }
+
+    private boolean checkWinner(Move move){
+        for(WinningStrategy winningStrategy : winningStrategies){
+            if(winningStrategy.checkWinner(board , move)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public static class Builder {
         private int dimension;

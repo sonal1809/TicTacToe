@@ -5,6 +5,7 @@ import org.example.Strategies.winningStrategy.DiagonalWinningStrategy;
 import org.example.Strategies.winningStrategy.RowWinningStrategy;
 import org.example.Strategies.winningStrategy.WinningStrategy;
 import org.example.controller.GameController;
+import org.example.exception.InvalidMoveException;
 import org.example.models.*;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidMoveException {
         GameController gameController = new GameController();
         System.out.println("GAME STARTS");
         Scanner scanner = new Scanner(System.in);
@@ -53,6 +54,13 @@ public class Main {
                 continue;
             }
             gameController.makeMove(game);
+        }
+
+        gameController.printBoard(game);
+        if (gameController.gameState(game).equals(GameState.ENDED)) {
+            System.out.println(gameController.getWinner(game).getName() + " has won the game.");
+        } else {
+            System.out.println("GAME DRAW");
         }
     }
 }
